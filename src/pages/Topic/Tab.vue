@@ -1,6 +1,121 @@
-<!--  推荐 -->
-
 <template>
+  <div>
+    <!-- 推荐 -->
+    <div class="tabWrapper" v-if="tabId === 9">
+      <div class="tabContent">
+        <Split/>
+        <ul v-for="(item, index) in recommendData" :key="index">
+          <li v-for="(topic, index) in item.topics" :key="index">
+            <XuanMei v-if="topic.style === 1" :topic="topic"/>
+            <GroupItem v-if="topic.style === 2" :topic="topic"/>
+            <Split/>
+          </li>
+        </ul>
+        <ul v-for="(item, index) in autoRecommendData.result" :key="index + '-label'">
+          <li v-for="(topic, index) in item.topics" :key="index">
+            <XuanMei v-if="topic.style === 1" :topic="topic"/>
+            <GroupItem v-if="topic.style === 2" :topic="topic"/>
+            <UpdateGoods v-if="topic.style === 3" :topic="topic"/>
+            <PhotoWall v-if="topic.style === 4" :topic="topic"/>
+            <Split/>
+          </li>
+          <BuyerShow v-if="item.look" :look="item.look"/>
+        </ul>
+      </div>
+    </div>
+    <!-- 达人 -->
+    <div class="tabWrapper" v-if="tabId === 4">
+      <div class="tabContent">
+        <Split/>
+        <ul>
+          <li v-for="(topic, index) in expertTabData.result" :key="index">
+            <XuanMei v-if="topic.style === 1" :topic="topic"/>
+            <GroupItem v-if="topic.style === 2" :topic="topic"/>
+            <UpdateGoods v-if="topic.style === 3" :topic="topic"/>
+            <PhotoWall v-if="topic.style === 4" :topic="topic"/>
+            <Split/>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- 上新 -->
+    <div class="tabWrapper" v-if="tabId === 5">
+      <div class="tabContent">
+        <Split/>
+        <ul>
+          <li v-for="(topic, index) in newTabData.result" :key="index">
+            <XuanMei v-if="topic.style === 1" :topic="topic"/>
+            <GroupItem v-if="topic.style === 2" :topic="topic"/>
+            <UpdateGoods v-if="topic.style === 3" :topic="topic"/>
+            <PhotoWall v-if="topic.style === 4" :topic="topic"/>
+            <Split/>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- 晒单 -->
+    <div class="tabWrapper" v-if="tabId === 7">
+      <div class="tabContent">
+        <div class="showTop-wrapper">
+          <div class="showTop-title">让生活更好的N种方式</div>
+          <div class="showTop-slogon">{{showCollection.title}}</div>
+          <div class="showTop-carousel-wrapper">
+            <ul class="showTop-carousel">
+              <li class="showTop-item"
+                  v-for="(look, index) in showCollection.lookList"
+                  :key="index"
+                  :style="{'background-image': 'url(' + look.banner.picUrl + ')'}"></li>
+            </ul>
+          </div>
+          <Split/>
+        </div>
+        <div class="showContent-wrapper">
+          <div class="showContent-title">TA们的严选生活</div>
+          <div class="showContent-toggle">
+            <div class="showContent-toggle-button" :class="{active: type === 1}" @click="changeType(1)">
+              <span class="txt">最新</span>
+            </div>
+            <div class="showContent-toggle-button" :class="{active: type === 2}" @click="changeType(2)">
+              <span class="txt">本月最热</span>
+            </div>
+            <div class="showContent-toggle-button" :class="{active: type === 3}" @click="changeType(3)">
+              <span class="txt">晒单合辑</span>
+            </div>
+          </div>
+          <div class="showContent-show-wrapper">
+            <ul v-if="showTabData" class="showContent-show">
+              <li v-for="(topic, index) in showTabData.topicList" :key="index" v-if="index%2 === 0" class="showContent-show-item">
+                <HomeBuyerShow v-if="!topic.isCollection" :topic="topic"/>
+                <BuyerShowCollection v-if="topic.isCollection" :topic="topic" :type="type"/>
+              </li>
+            </ul>
+            <ul v-if="showTabData" class="showContent-show">
+              <li v-for="(topic, index) in showTabData.topicList" :key="index"  v-if="index%2 === 1" class="showContent-show-item">
+                <HomeBuyerShow v-if="!topic.isCollection" :topic="topic"/>
+                <BuyerShowCollection v-if="topic.isCollection" :topic="topic" :type="type"/>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- HOME -->
+    <div class="tabWrapper" v-if="tabId === 6">
+      <div class="tabContent">
+        <Split/>
+        <ul>
+          <li v-for="(topic, index) in homeTabData.result" :key="index">
+            <HomeShow v-if="topic.style === 0" :topic="topic"/>
+            <XuanMei v-if="topic.style === 1" :topic="topic"/>
+            <GroupItem v-if="topic.style === 2" :topic="topic"/>
+            <UpdateGoods v-if="topic.style === 3" :topic="topic"/>
+            <PhotoWall v-if="topic.style === 4" :topic="topic"/>
+            <Split/>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 </template>
 

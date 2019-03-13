@@ -1,7 +1,40 @@
 <template>
   <div class="topic-wrapper">
-    <!-- 识物界面头部 -->
+    <div class="header-wrap">
+      <div class="header">
+        <div class="header-left">
+          <div class="goHome" @click="$router.replace('/')">
+            <i class="iconfont icon-shouye"></i>
+          </div>
+        </div>
+
+        <div class="title">
+          <span class="main-title">发现</span>
+          <span class="subTitle">甄选家</span>
+        </div>
+        <div class="header-right">
+          <div class="goCart" @click="$router.replace('/cart')">
+            <i class="iconfont icon-gouwuche"></i>
+          </div>
+          <div class="goSearch" @click="$router.replace('/search')">
+            <i class="iconfont icon-sousuo"></i>
+          </div>
+        </div>
+      </div>
+      <div class="header-nav-wrapper">
+        <ul class="header-nav">
+          <li class="header-nav-item" :class="{active: +$route.params.id === index}" v-for="(tab, index) in tabs" :key="index">
+            <RouterLink :to="`/topic/tab/${index}`">
+              <span>{{tab.tabName}}</span>
+            </RouterLink>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--识物界面主体内容-->
+    <div class="topic-content">
       <RouterView/>
+    </div>
   </div>
 </template>
 
